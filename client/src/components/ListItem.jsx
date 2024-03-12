@@ -3,6 +3,7 @@ import { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import TickIcon from "./TickIcon";
 import Modal from "./Modal";
+import { TASKS } from "../constants";
 
 const ListItem = ({ fetchData, task }) => {
   const [showModal, setShowModal] = useState(false);
@@ -10,7 +11,7 @@ const ListItem = ({ fetchData, task }) => {
   const serverURL = import.meta.env.VITE_SERVERURL;
   const deleteItem = async () => {
     try {
-      const response = await fetch(`${serverURL}/tasks/${task.id}`, {
+      const response = await fetch(`${serverURL}/${TASKS}/${task.id}`, {
         method: "DELETE",
       });
       if (response.status === 200) {
