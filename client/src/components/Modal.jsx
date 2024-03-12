@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
+import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
+import { TASKS } from "../constants";
 
 const Modal = ({ mode, setShowModal, fetchData, task }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const serverURL = import.meta.env.VITE_SERVERURL;
-  const editMode = mode === 'edit' ? true : false;
+  const editMode = mode === "edit" ? true : false;
   const [data, setdata] = useState({
     user_email: editMode ? task.user_email : cookies.email,
-    title: editMode ? task.title : '',
+    title: editMode ? task.title : "",
     progress: editMode ? task.progress : 50,
     date: editMode ? task.date : new Date(),
   });
@@ -19,16 +20,16 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
   const postData = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${serverURL}/tasks`, {
-        method: 'POST',
+      const response = await fetch(`${serverURL}/${TASKS}`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
       if (response.status === 200) {
-        console.log('data posted successfully');
+        console.log("data posted successfully");
         setShowModal(false);
         fetchData();
       }
@@ -40,15 +41,15 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
   const editData = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${serverURL}/tasks/${task.id}`, {
-        method: 'PATCH',
+      const response = await fetch(`${serverURL}/${TASKS}/${task.id}`, {
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
       if (response.status === 200) {
-        console.log('data edited successfully');
+        console.log("data edited successfully");
         setShowModal(false);
         fetchData();
       }
@@ -63,10 +64,10 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
   };
 
   return (
-    <div className='overlay'>
-      <div className='modal'>
-        <div className='form-title-container'>
-          {' '}
+    <div className="overlay">
+      <div className="modal">
+        <div className="form-title-container">
+          {" "}
           <h3>Let's {mode} your task!</h3>
           <button
             onClick={() => {
@@ -76,32 +77,32 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
             X
           </button>
         </div>
-        <form action=''>
+        <form action="">
           <input
             required
             maxLength={30}
-            placeholder='your task goes here'
-            name='title'
+            placeholder="your task goes here"
+            name="title"
             value={data.title}
             onChange={handleChange}
           />
           <br />
-          <label htmlFor='range'> Drag to select your current progress!</label>
+          <label htmlFor="range"> Drag to select your current progress!</label>
           <input
             required
-            type='range'
-            id='range'
-            min='0'
-            max='100'
-            name='progress'
+            type="range"
+            id="range"
+            min="0"
+            max="100"
+            name="progress"
             value={data.progress}
             onChange={handleChange}
           />
 
           <input
             className={mode}
-            type='submit'
-            value='Submit'
+            type="submit"
+            value="Submit"
             onClick={editMode ? editData : postData}
           />
         </form>
