@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import ProgressBar from './ProgressBar';
-import TickIcon from './TickIcon';
-import Modal from './Modal';
+import ProgressBar from "./ProgressBar";
+import TickIcon from "./TickIcon";
+import Modal from "./Modal";
 
 const ListItem = ({ fetchData, task }) => {
   const [showModal, setShowModal] = useState(false);
@@ -11,7 +11,7 @@ const ListItem = ({ fetchData, task }) => {
   const deleteItem = async () => {
     try {
       const response = await fetch(`${serverURL}/tasks/${task.id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
       if (response.status === 200) {
         fetchData();
@@ -21,23 +21,23 @@ const ListItem = ({ fetchData, task }) => {
     }
   };
   return (
-    <li className='list-item'>
-      <div className='info-container'>
+    <li className="list-item">
+      <div className="info-container">
         <TickIcon />
-        <p className='task-title'>{task.title}</p>
+        <p className="task-title">{task.title}</p>
         <ProgressBar progress={task.progress} />
       </div>
-      <div className='button-container'>
-        <button className='edit' onClick={() => setShowModal(true)}>
+      <div className="button-container">
+        <button className="edit" onClick={() => setShowModal(true)}>
           Edit
         </button>
-        <button className='delete' onClick={deleteItem}>
+        <button className="delete" onClick={deleteItem}>
           Delete
         </button>
       </div>
       {showModal && (
         <Modal
-          mode='edit'
+          mode="edit"
           setShowModal={setShowModal}
           fetchData={fetchData}
           task={task}
