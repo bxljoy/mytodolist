@@ -4,15 +4,22 @@ import ProgressBar from "./ProgressBar";
 import TickIcon from "./TickIcon";
 import Modal from "./Modal";
 import { TASKS } from "../constants";
+import { useCookies } from "react-cookie";
 
 const ListItem = ({ fetchData, task }) => {
   const [showModal, setShowModal] = useState(false);
+  const [cookies] = useCookies(null);
+  const authToken = cookies.authToken;
 
   const serverURL = import.meta.env.VITE_SERVERURL;
   const deleteItem = async () => {
     try {
       const response = await fetch(`${serverURL}/${TASKS}/${task.id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
       });
       if (response.status === 200) {
         fetchData();
