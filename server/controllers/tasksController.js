@@ -3,6 +3,9 @@ const { v4: uuidv4 } = require("uuid");
 
 const getTasks = async (req, res) => {
   const { userEmail } = req.params;
+  //verify if the user is authorized
+  if (!req.email) return res.status(401).json({ message: "Unauthorized" });
+
   try {
     const tasks = await pool.query(
       "SELECT * FROM tasks WHERE user_email = $1",
@@ -16,6 +19,9 @@ const getTasks = async (req, res) => {
 
 const addTask = async (req, res) => {
   const { user_email, title, progress, date } = req.body;
+  //verify if the user is authorized
+  if (!req.email) return res.status(401).json({ message: "Unauthorized" });
+
   console.log(user_email, title, progress, date);
   const id = uuidv4();
   try {
@@ -34,6 +40,9 @@ const addTask = async (req, res) => {
 const updateTask = async (req, res) => {
   const { id } = req.params;
   const { user_email, title, progress, date } = req.body;
+  //verify if the user is authorized
+  if (!req.email) return res.status(401).json({ message: "Unauthorized" });
+
   try {
     const updateTask = await pool.query(
       "UPDATE tasks SET user_email = $1, title = $2, progress = $3, date = $4 WHERE id = $5",
@@ -49,6 +58,9 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   const { id } = req.params;
+  //verify if the user is authorized
+  if (!req.email) return res.status(401).json({ message: "Unauthorized" });
+
   try {
     const deleteTask = await pool.query("DELETE FROM tasks WHERE id = $1", [
       id,

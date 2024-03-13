@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { TASKS } from "../constants";
+import { useNavigate } from "react-router-dom";
 
 const Modal = ({ mode, setShowModal, fetchData, task }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null);
@@ -13,9 +14,8 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
     date: editMode ? task.date : new Date(),
   });
 
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
+  const navigate = useNavigate();
+  const authToken = cookies.authToken;
 
   const postData = async (e) => {
     e.preventDefault();
@@ -24,6 +24,7 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(data),
       });
@@ -32,6 +33,11 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
         console.log("data posted successfully");
         setShowModal(false);
         fetchData();
+      } else {
+        setShowModal(false);
+        removeCookie("email");
+        removeCookie("authToken");
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -45,6 +51,7 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
         },
         body: JSON.stringify(data),
       });
@@ -52,6 +59,11 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
         console.log("data edited successfully");
         setShowModal(false);
         fetchData();
+      } else {
+        setShowModal(false);
+        removeCookie("email");
+        removeCookie("authToken");
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -62,13 +74,12 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
     const { name, value } = e.target;
     setdata({ ...data, [name]: value });
   };
-
   return (
     <div className="overlay">
       <div className="modal">
         <div className="form-title-container">
           {" "}
-          <h3>Let's {mode} your task!</h3>
+          <h3>Let&apos;s {mode} your task!</h3>
           <button
             onClick={() => {
               setShowModal(false);

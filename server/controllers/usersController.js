@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../db");
+require("dotenv").config();
+
+const secret = process.env.SECRET_KEY;
 
 //signup
 const signup = async (req, res) => {
@@ -12,7 +15,7 @@ const signup = async (req, res) => {
       "INSERT INTO users (email, hashed_password) VALUES ($1, $2)",
       [email, hashedPassword]
     );
-    const token = jwt.sign({ email }, "secret key", { expiresIn: "1h" });
+    const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
 
     res.json({ email, token });
   } catch (error) {
@@ -32,7 +35,7 @@ const signin = async (req, res) => {
     ]);
     if (!user.rows.length) return res.json({ details: "user not found" });
     const success = bcrypt.compareSync(password, user.rows[0].hashed_password);
-    const token = jwt.sign({ email }, "secret key", { expiresIn: "1h" });
+    const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
     if (success) {
       res.json({ email: user.rows[0].email, token });
     } else {
