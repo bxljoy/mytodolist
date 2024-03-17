@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { TASKS } from "../constants";
-import { useNavigate } from "react-router-dom";
 
 const Modal = ({ mode, setShowModal, fetchData, task }) => {
   const [cookies, setCookie, removeCookie] = useCookies(null);
@@ -14,7 +13,6 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
     date: editMode ? task.date : new Date(),
   });
 
-  const navigate = useNavigate();
   const authToken = cookies.authToken;
 
   const postData = async (e) => {
@@ -74,13 +72,17 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
     const { name, value } = e.target;
     setdata({ ...data, [name]: value });
   };
+
   return (
     <div className="overlay">
-      <div className="modal">
-        <div className="form-title-container">
+      <div className="w-auto max-w-96 p-8 bg-white">
+        <div className="flex flex-row justify-between items-center">
           {" "}
-          <h3>Let&apos;s {mode} your task!</h3>
+          <h3 className="text-gray-600 font-bold">
+            Let&apos;s {mode} your task!
+          </h3>
           <button
+            className="text-bold bg-red-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-red-800"
             onClick={() => {
               setShowModal(false);
             }}
@@ -88,7 +90,10 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
             X
           </button>
         </div>
-        <form action="">
+        <form
+          className="flex flex-col justify-center"
+          onSubmit={editMode ? editData : postData}
+        >
           <input
             required
             maxLength={30}
@@ -98,7 +103,10 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
             onChange={handleChange}
           />
           <br />
-          <label htmlFor="range"> Drag to select your current progress!</label>
+          <label className="text-lg font-bold" htmlFor="range">
+            {" "}
+            Drag to select your current progress!
+          </label>
           <input
             required
             type="range"
@@ -111,10 +119,9 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
           />
 
           <input
-            className={mode}
+            className="bg-blue-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-blue-800"
             type="submit"
             value="Submit"
-            onClick={editMode ? editData : postData}
           />
         </form>
       </div>

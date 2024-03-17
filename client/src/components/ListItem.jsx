@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import ProgressBar from "./ProgressBar";
-import TickIcon from "./TickIcon";
 import Modal from "./Modal";
 import { TASKS } from "../constants";
 import { useCookies } from "react-cookie";
@@ -29,17 +27,24 @@ const ListItem = ({ fetchData, task }) => {
     }
   };
   return (
-    <li className="list-item">
-      <div className="info-container">
-        <TickIcon />
-        <p className="task-title">{task.title}</p>
+    <li className="flex flex-row max-md:flex-col gap-6 justify-between max-md:justify-center items-center my-6 leading-10 border-solid border-2 rounded-lg shadow-md">
+      <p className="lg:ml-6 md:max-w-12  text-2xl font-bold text-blue-500">
+        {task.title}
+      </p>
+      <div className="">
         <ProgressBar progress={task.progress} />
       </div>
-      <div className="button-container">
-        <button className="edit" onClick={() => setShowModal(true)}>
+      <div className="lg:mr-6 flex flex-row gap-4">
+        <button
+          className="text-bold bg-green-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-green-800"
+          onClick={() => setShowModal(true)}
+        >
           Edit
         </button>
-        <button className="delete" onClick={deleteItem}>
+        <button
+          className="text-bold bg-orange-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-orange-800"
+          onClick={deleteItem}
+        >
           Delete
         </button>
       </div>

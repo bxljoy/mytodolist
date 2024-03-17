@@ -4,18 +4,14 @@ import ListItem from "./ListItem";
 import Auth from "./Auth";
 import { useCookies } from "react-cookie";
 import { TASKS } from "../constants";
-import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
 function Home() {
   const [cookies, setCookie, removeCookie] = useCookies(null);
   const authToken = cookies.authToken;
   const userEmail = cookies.email;
-  // console.log('authToken', authToken);
-  // console.log('email', userEmail);
   const serverURL = import.meta.env.VITE_SERVERURL;
   const [tasks, setTasks] = useState([]);
-  const navigate = useNavigate();
 
   const isTokenExpired = (token) => {
     const decodedToken = jwtDecode(token);
@@ -53,26 +49,29 @@ function Home() {
     }
   }, []);
 
-  // console.log(tasks);
-
   const sortedTasks = tasks?.sort(
     (a, b) => new Date(a.date) - new Date(b.date)
   );
 
   return (
-    <div className="app">
-      {" "}
-      {!authToken && <Auth />}
-      {authToken && (
-        <>
-          <ListHeader listName={"Holiday Tick List"} fetchData={fetchData} />
-          <p>welcome back {userEmail}</p>
-          {sortedTasks.map((task) => (
-            <ListItem key={task.id} task={task} fetchData={fetchData} />
-          ))}
-        </>
+    <>
+      {!authToken ? (
+        <Auth />
+      ) : (
+        <div className="mx-12">
+          <ListHeader
+            listName={"My Todo List"}
+            userEmail={userEmail}
+            fetchData={fetchData}
+          />
+          <ul>
+            {sortedTasks.map((task) => (
+              <ListItem key={task.id} task={task} fetchData={fetchData} />
+            ))}
+          </ul>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 
