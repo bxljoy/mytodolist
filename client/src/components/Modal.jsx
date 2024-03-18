@@ -73,12 +73,10 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
 
   return (
     <div className="overlay">
-      <div className="w-auto max-w-96 p-8 bg-white">
-        <div className="flex flex-row justify-between items-center">
+      <div className="p-8 bg-[#F7EEDD] font-caladea h-96">
+        <div className="md:w-[600px] flex flex-row justify-between items-center opacity-100">
           {" "}
-          <h3 className="text-gray-600 font-bold">
-            Let&apos;s {mode} your task!
-          </h3>
+          <h3 className="font-bold">Let&apos;s {mode} your task!</h3>
           <button
             className="text-bold bg-red-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-red-800"
             onClick={() => {
@@ -117,7 +115,7 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
           />
 
           <input
-            className="bg-blue-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-blue-800"
+            className="bg-[#008DDA] rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-blue-800"
             type="submit"
             value="Submit"
           />
