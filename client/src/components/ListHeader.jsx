@@ -13,17 +13,17 @@ const ListHeader = ({ listName, userEmail, fetchData }) => {
   };
 
   return (
-    <div className="w-full">
-      <div className="flex flex-row max-md:flex-col justify-between max-md:justify-center items-center gap-4 py-8 mb-8 rounded-lg bg-purple-500">
-        <h1 className="text-4xl max-lg:text-2xl font-bold lg:ml-4 text-white">
+    <div className="w-full font-caladea">
+      <div className="flex flex-row max-md:flex-col justify-between max-md:justify-center items-center gap-4 py-8 mb-8 rounded-lg bg-[#008DDA]">
+        <h1 className="text-4xl max-lg:text-2xl font-bold lg:ml-4 text-[#F7EEDD]">
           {listName}
         </h1>
         <div className="flex flex-row max-md:flex-col justify-center items-center lg:gap-10 gap-4">
-          <p className="text-white">
-            Hello, <span className="text-white font-bold">{userEmail}</span>
+          <p className="text-[#F7EEDD]">
+            Hello, <span className="text-[#F7EEDD] font-bold">{userEmail}</span>
           </p>
           <button
-            className="text-white font-bold lg:mr-8 hover:text-orange-500"
+            className="text-[#F7EEDD] font-bold lg:mr-8 hover:text-orange-500"
             onClick={signOut}
           >
             Sign Out
@@ -32,7 +32,7 @@ const ListHeader = ({ listName, userEmail, fetchData }) => {
       </div>
       <div className="text-end max-md:text-center my-6">
         <button
-          className="text-bold bg-blue-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-blue-800"
+          className="text-bold bg-[#008DDA] rounded-lg text-[#F7EEDD] px-4 py-2 leading-6 font-semibold hover:bg-blue-800"
           onClick={() => setShowModal(true)}
         >
           Add Task
