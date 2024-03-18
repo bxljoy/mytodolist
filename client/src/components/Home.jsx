@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import ListHeader from "./ListHeader";
 import ListItem from "./ListItem";
 import Auth from "./Auth";
-import { useCookies } from "react-cookie";
 import { TASKS } from "../constants";
 import { jwtDecode } from "jwt-decode";
 
 function Home() {
-  const [cookies, setCookie, removeCookie] = useCookies(null);
-  const authToken = cookies.authToken;
-  const userEmail = cookies.email;
+  const authToken = localStorage.getItem("authToken");
+  const userEmail = localStorage.getItem("email");
   const serverURL = import.meta.env.VITE_SERVERURL;
   const [tasks, setTasks] = useState([]);
 
@@ -32,8 +30,8 @@ function Home() {
       setTasks(json);
     } catch (error) {
       console.log(error);
-      removeCookie("email");
-      removeCookie("authToken");
+      localStorage.removeItem("email");
+      localStorage.removeItem("authToken");
       window.location.reload();
     }
   }
@@ -41,8 +39,8 @@ function Home() {
   useEffect(() => {
     if (authToken) {
       if (isTokenExpired(authToken)) {
-        removeCookie("email");
-        removeCookie("authToken");
+        localStorage.removeItem("email");
+        localStorage.removeItem("authToken");
         window.location.reload();
       }
       fetchData();

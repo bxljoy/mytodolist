@@ -2,12 +2,10 @@ import { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import Modal from "./Modal";
 import { TASKS } from "../constants";
-import { useCookies } from "react-cookie";
 
 const ListItem = ({ fetchData, task }) => {
   const [showModal, setShowModal] = useState(false);
-  const [cookies] = useCookies(null);
-  const authToken = cookies.authToken;
+  const authToken = localStorage.getItem("authToken");
 
   const serverURL = import.meta.env.VITE_SERVERURL;
   const deleteItem = async () => {
