@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 import { USERS, SIGNIN, SIGNUP } from "../constants";
 
 const Auth = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(null);
   const [isSignIn, setIsSignIn] = useState(true);
   const [error, setError] = useState(null);
   const [email, setEmail] = useState(null);
@@ -18,7 +16,7 @@ const Auth = () => {
     const response = await fetch(`${serverURL}/${USERS}/${endPoint}`, {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, password }),
     });
@@ -27,8 +25,8 @@ const Auth = () => {
     if (data.details) {
       setError(data.details);
     } else {
-      setCookie("email", data.email);
-      setCookie("authToken", data.token);
+      localStorage.setItem("email", data.email);
+      localStorage.setItem("authToken", data.token);
       window.location.reload();
     }
   };

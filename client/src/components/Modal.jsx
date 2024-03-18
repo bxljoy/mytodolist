@@ -1,19 +1,17 @@
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 import { TASKS } from "../constants";
 
 const Modal = ({ mode, setShowModal, fetchData, task }) => {
-  const [cookies, setCookie, removeCookie] = useCookies(null);
   const serverURL = import.meta.env.VITE_SERVERURL;
   const editMode = mode === "edit" ? true : false;
   const [data, setdata] = useState({
-    user_email: editMode ? task.user_email : cookies.email,
+    user_email: editMode ? task.user_email : localStorage.getItem("email"),
     title: editMode ? task.title : "",
     progress: editMode ? task.progress : 50,
     date: editMode ? task.date : new Date(),
   });
 
-  const authToken = cookies.authToken;
+  const authToken = localStorage.getItem("authToken");
 
   const postData = async (e) => {
     e.preventDefault();
@@ -33,8 +31,8 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
         fetchData();
       } else {
         setShowModal(false);
-        removeCookie("email");
-        removeCookie("authToken");
+        localStorage.removeItem("email");
+        localStorage.removeItem("authToken");
         window.location.reload();
       }
     } catch (error) {
@@ -59,8 +57,8 @@ const Modal = ({ mode, setShowModal, fetchData, task }) => {
         fetchData();
       } else {
         setShowModal(false);
-        removeCookie("email");
-        removeCookie("authToken");
+        localStorage.removeItem("email");
+        localStorage.removeItem("authToken");
         window.location.reload();
       }
     } catch (error) {
