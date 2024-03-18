@@ -27,8 +27,8 @@ const ListItem = ({ fetchData, task }) => {
     }
   };
   return (
-    <li className="flex flex-row max-md:flex-col gap-6 justify-between max-md:justify-center items-center my-6 leading-10 border-solid border-2 rounded-lg shadow-md">
-      <p className="lg:ml-6 md:max-w-12  text-2xl font-bold text-blue-500">
+    <li className="flex flex-row max-md:flex-col gap-6 font-caladea justify-between max-md:justify-center items-center my-6 leading-10 border-solid border-2 rounded-lg shadow-md bg-[#F7EEDD]">
+      <p className="lg:ml-6 md:w-64 text-2xl font-bold text-[#008DDA]">
         {task.title}
       </p>
       <div className="">
@@ -36,13 +36,13 @@ const ListItem = ({ fetchData, task }) => {
       </div>
       <div className="lg:mr-6 flex flex-row gap-4">
         <button
-          className="text-bold bg-green-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-green-800"
+          className="text-bold  bg-[#41C9E2] rounded-lg text-[#F7EEDD] px-4 py-2 leading-6 font-semibold hover:bg-green-800"
           onClick={() => setShowModal(true)}
         >
           Edit
         </button>
         <button
-          className="text-bold bg-orange-500 rounded-lg text-white px-4 py-2 leading-6 font-semibold hover:bg-orange-800"
+          className="text-bold bg-[#008DDA] rounded-lg text-[#F7EEDD] px-4 py-2 leading-6 font-semibold hover:bg-orange-800"
           onClick={deleteItem}
         >
           Delete
