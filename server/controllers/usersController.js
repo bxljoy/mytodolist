@@ -43,6 +43,10 @@ const signin = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.json({
+      details:
+        "An error occurred while trying to sign in. Please try again later.",
+    });
   }
 };
 
