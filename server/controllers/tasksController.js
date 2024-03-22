@@ -14,6 +14,7 @@ const getTasks = async (req, res) => {
     res.json(tasks.rows);
   } catch (error) {
     console.log(error);
+    res.json({ details: error.detail });
   }
 };
 
@@ -32,6 +33,7 @@ const addTask = async (req, res) => {
     res.json(newTask.rows);
   } catch (error) {
     console.log(error);
+    res.json({ details: error.detail });
   }
 };
 
@@ -51,6 +53,7 @@ const updateTask = async (req, res) => {
     res.json(updateTask.rows);
   } catch (error) {
     console.log(error);
+    res.json({ details: error.detail });
   }
 };
 
@@ -68,6 +71,7 @@ const deleteTask = async (req, res) => {
     res.json(deleteTask.rows);
   } catch (error) {
     console.log(error);
+    res.json({ details: error.detail });
   }
 };
 
