@@ -17,11 +17,11 @@ const signup = async (req, res) => {
     );
     const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
 
-    res.json({ email, token });
+    res.status(201).json({ email, token });
   } catch (error) {
     console.log(error);
     if (error) {
-      res.json({ details: error.detail });
+      res.status(400).json({ details: error.detail });
     }
   }
 };
@@ -37,13 +37,13 @@ const signin = async (req, res) => {
     const success = bcrypt.compareSync(password, user.rows[0].hashed_password);
     const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
     if (success) {
-      res.json({ email: user.rows[0].email, token });
+      res.status(200).json({ email: user.rows[0].email, token });
     } else {
-      res.json({ details: "password incorrect" });
+      res.status(400).json({ details: "password incorrect" });
     }
   } catch (error) {
     console.log(error);
-    res.json({
+    res.status(400).json({
       details:
         "An error occurred while trying to sign in. Please try again later.",
     });
