@@ -10,9 +10,17 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     console.log("email", email);
     console.log("password", password);
     const endPoint = isSignIn ? SIGNIN : SIGNUP;
+    if (endPoint === SIGNUP) {
+      const confirmPassword = e.target.confirmpassword.value;
+      if (password !== confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+    }
     const response = await fetch(`${serverURL}/${USERS}/${endPoint}`, {
       method: "POST",
       headers: {
