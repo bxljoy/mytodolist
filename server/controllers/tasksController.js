@@ -11,10 +11,10 @@ const getTasks = async (req, res) => {
       "SELECT * FROM tasks WHERE user_email = $1",
       [userEmail]
     );
-    res.json(tasks.rows);
+    res.status(200).json(tasks.rows);
   } catch (error) {
     console.log(error);
-    res.json({ details: error.detail });
+    res.status(400).json({ details: error.detail });
   }
 };
 
@@ -30,10 +30,10 @@ const addTask = async (req, res) => {
       "INSERT INTO tasks (id, user_email, title, progress, date) VALUES ($1, $2, $3, $4, $5) ",
       [id, user_email, title, progress, date]
     );
-    res.json(newTask.rows);
+    res.status(201).json(newTask.rows);
   } catch (error) {
     console.log(error);
-    res.json({ details: error.detail });
+    res.status(400).json({ details: error.detail });
   }
 };
 
@@ -50,10 +50,10 @@ const updateTask = async (req, res) => {
       "UPDATE tasks SET user_email = $1, title = $2, progress = $3, date = $4 WHERE id = $5",
       [user_email, title, progress, date, id]
     );
-    res.json(updateTask.rows);
+    res.status(200).json(updateTask.rows);
   } catch (error) {
     console.log(error);
-    res.json({ details: error.detail });
+    res.status(400).json({ details: error.detail });
   }
 };
 
@@ -68,10 +68,10 @@ const deleteTask = async (req, res) => {
     const deleteTask = await pool.query("DELETE FROM tasks WHERE id = $1", [
       id,
     ]);
-    res.json(deleteTask.rows);
+    res.status(200).json(deleteTask.rows);
   } catch (error) {
     console.log(error);
-    res.json({ details: error.detail });
+    res.status(400).json({ details: error.detail });
   }
 };
 
