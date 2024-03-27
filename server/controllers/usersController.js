@@ -1,7 +1,7 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const pool = require("../db");
-require("dotenv").config();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const pool = require('../db');
+require('dotenv').config();
 
 const secret = process.env.SECRET_KEY;
 
@@ -12,21 +12,22 @@ const signup = async (req, res) => {
   const hashedPassword = bcrypt.hashSync(password, salt);
 
   try {
-    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
+    const user = await pool.query('SELECT * FROM users WHERE email = $1', [
       email,
     ]);
     if (user.rows.length) {
-      return res.status(400).json({ details: "User already exists" });
+      return res.status(400).json({ details: 'User already exists' });
     }
 
     const signUP = await pool.query(
-      "INSERT INTO users (email, hashed_password) VALUES ($1, $2)",
+      'INSERT INTO users (email, hashed_password) VALUES ($1, $2)',
       [email, hashedPassword]
     );
-    const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
+    const token = jwt.sign({ email }, secret, { expiresIn: '1h' });
 
     res.status(201).json({ email, token });
   } catch (error) {
+    // error handling
     console.log(error);
     if (error) {
       res.status(400).json({ details: error.detail });
@@ -38,22 +39,23 @@ const signup = async (req, res) => {
 const signin = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
+    const user = await pool.query('SELECT * FROM users WHERE email = $1', [
       email,
     ]);
-    if (!user.rows.length) return res.json({ details: "user not found" });
+    if (!user.rows.length) return res.json({ details: 'user not found' });
     const success = bcrypt.compareSync(password, user.rows[0].hashed_password);
-    const token = jwt.sign({ email }, secret, { expiresIn: "1h" });
+    const token = jwt.sign({ email }, secret, { expiresIn: '1h' });
     if (success) {
       res.status(200).json({ email: user.rows[0].email, token });
     } else {
-      res.status(400).json({ details: "password incorrect" });
+      res.status(400).json({ details: 'password incorrect' });
     }
   } catch (error) {
+    // error handling
     console.log(error);
     res.status(400).json({
       details:
-        "An error occurred while trying to sign in. Please try again later.",
+        'An error occurred while trying to sign in. Please try again later.',
     });
   }
 };

@@ -36,3 +36,4 @@ dist-ssr
 /coverage
 /client/coverage
 /server/coverage
+.vercel

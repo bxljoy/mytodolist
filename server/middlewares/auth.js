@@ -1,10 +1,10 @@
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const secret = process.env.SECRET_KEY;
 
 const auth = async (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    const token = req.headers.authorization.split(' ')[1];
     // console.log("token", token);
     let decodedData;
 
@@ -16,7 +16,7 @@ const auth = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    res.status(401).json({ message: "Unauthorized" });
+    res.status(401).json({ message: 'Unauthorized' });
   }
 };
 
