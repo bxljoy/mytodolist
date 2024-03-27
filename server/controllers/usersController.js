@@ -10,7 +10,15 @@ const signup = async (req, res) => {
   const { email, password } = req.body;
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(password, salt);
+
   try {
+    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+    if (user.rows.length) {
+      return res.status(400).json({ details: "User already exists" });
+    }
+
     const signUP = await pool.query(
       "INSERT INTO users (email, hashed_password) VALUES ($1, $2)",
       [email, hashedPassword]
