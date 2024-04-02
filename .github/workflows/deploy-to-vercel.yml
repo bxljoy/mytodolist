@@ -22,8 +22,8 @@ jobs:
       - name: Build Project Artifacts
         run: |
           cd server
-          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel  --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
         run: |
           cd server
-          vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+          vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
