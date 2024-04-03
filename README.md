@@ -1,7 +1,5 @@
 # TodoList Application
 
-## Description
-
 ## Tech Stack
 
 - **Frontend**: Vite + React + Tailwind CSS.
@@ -103,7 +101,7 @@ This server will start on `localhost:3002`.
 
 # Backend
 
-- Read the Vercel Documentation: [GHow can I use GitHub Actions with Vercel?](https://vercel.com/guides/how-can-i-use-github-actions-with-vercel)
+- Read the Vercel Documentation: [How can I use GitHub Actions with Vercel?](https://vercel.com/guides/how-can-i-use-github-actions-with-vercel)
 - Follow the guidance to create the .github/workflows/deploy-to-vercel.yml
 - Create your Vercel Access Token on Vercel Dashboard
 - Find your projectId and orgId on Vercel Dashboard
