@@ -6,6 +6,7 @@ const Auth = () => {
   const [error, setError] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [confirmpassword, setConfirmpassword] = useState(null);
   const serverURL = import.meta.env.VITE_SERVERURL;
 
   const handleSubmit = async (e) => {
@@ -15,8 +16,7 @@ const Auth = () => {
     console.log("password", password);
     const endPoint = isSignIn ? SIGNIN : SIGNUP;
     if (endPoint === SIGNUP) {
-      const confirmPassword = e.target.confirmpassword.value;
-      if (password !== confirmPassword) {
+      if (password !== confirmpassword) {
         setError("Passwords do not match");
         return;
       }
@@ -112,6 +112,7 @@ const Auth = () => {
                   type="password"
                   autoComplete="current-password"
                   required
+                  onChange={(e) => setConfirmpassword(e.target.value)}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -119,12 +120,14 @@ const Auth = () => {
           )}
 
           <div>
-            {error && <p className="text-red-400 font-bold">{error}</p>}
+            {error && (
+              <p className="text-red-400 font-bold"> Error Message: {error}</p>
+            )}
             <button
               type="submit"
               className="flex w-full mt-2 justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              {isSignIn ? "Sign in" : "Sign up"}
+              Submit
             </button>
           </div>
         </form>
