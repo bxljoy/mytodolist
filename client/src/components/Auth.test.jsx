@@ -1,6 +1,6 @@
-import { render, screen, fireEvent } from "../utils/test-utils";
-import Auth from "./Auth";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { test, expect } from "vitest";
+import Auth from "./Auth";
 // import renderer from "react-test-renderer";
 
 test("Title is visible", () => {
@@ -11,14 +11,17 @@ test("Title is visible", () => {
 
 test("Email address is visible", () => {
   render(<Auth />);
-  const emailElement = screen.getByText(/email address/i);
-  expect(emailElement).toBeInTheDocument();
+  expect(screen.getByText(/email address/i)).toBeInTheDocument();
+  expect(
+    screen.getByRole("textbox", { name: /email address/i })
+  ).toBeInTheDocument();
 });
 
 test("Pasword is visible", () => {
   render(<Auth />);
-  const passwordElement = screen.getByText(/password/i);
-  expect(passwordElement).toBeInTheDocument();
+  expect(screen.getByText(/password/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+  // screen.logTestingPlaygroundURL();
 });
 
 test("Sign up toggle button on click", async () => {
@@ -27,6 +30,7 @@ test("Sign up toggle button on click", async () => {
   expect(signupButton).toBeInTheDocument();
   fireEvent.click(signupButton);
   expect(await screen.findByText(/sign up your account/i)).toBeInTheDocument();
+  // screen.debug();
 });
 
 test("Sign in toggle button on click", async () => {
@@ -57,6 +61,7 @@ test("Sign In submit button on click successfully", async () => {
   const signinButton = screen.getByRole("button", { name: /submit/i });
   expect(signinButton).toBeInTheDocument();
   fireEvent.click(signinButton);
+  // screen.debug();
 });
 
 test("Sign In submit button on click failed", async () => {
