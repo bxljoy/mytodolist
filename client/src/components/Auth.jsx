@@ -9,6 +9,12 @@ const Auth = () => {
   const [confirmpassword, setConfirmpassword] = useState(null);
   const serverURL = import.meta.env.VITE_SERVERURL;
 
+  /**
+   * handle the form submission
+   *
+   * @param {*} e
+   * @returns
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
