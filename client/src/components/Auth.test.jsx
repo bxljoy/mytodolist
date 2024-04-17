@@ -1,17 +1,27 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { test, expect } from "vitest";
+import { logRoles } from "@testing-library/dom";
 import Auth from "./Auth";
-// import renderer from "react-test-renderer";
+import { http, HttpResponse } from "msw";
+import { server } from "../mocks/server";
+
+test("Logo image is visible", () => {
+  const { container } = render(<Auth />);
+  logRoles(container);
+
+  const logoElement = screen.getByRole("img", { name: /your logo/i });
+  expect(logoElement).toBeInTheDocument();
+});
 
 test("Title is visible", () => {
   render(<Auth />);
-  const titleElement = screen.getByText(/sign in to your account/i);
+  const titleElement = screen.getByRole("heading", {
+    name: /your account/i,
+  });
   expect(titleElement).toBeInTheDocument();
 });
 
 test("Email address is visible", () => {
   render(<Auth />);
-  expect(screen.getByText(/email address/i)).toBeInTheDocument();
   expect(
     screen.getByRole("textbox", { name: /email address/i })
   ).toBeInTheDocument();
@@ -19,7 +29,6 @@ test("Email address is visible", () => {
 
 test("Pasword is visible", () => {
   render(<Auth />);
-  expect(screen.getByText(/password/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
   // screen.logTestingPlaygroundURL();
 });
@@ -50,7 +59,7 @@ test("Sign in toggle button on click", async () => {
 
 test("Sign In submit button on click successfully", async () => {
   render(<Auth />);
-  const emailInput = screen.getByLabelText(/email address/i);
+  const emailInput = screen.getByRole("textbox", { name: /email address/i });
   expect(emailInput).toBeInTheDocument();
   fireEvent.change(emailInput, { target: { value: "alex@test.com" } });
 
@@ -65,8 +74,22 @@ test("Sign In submit button on click successfully", async () => {
 });
 
 test("Sign In submit button on click failed", async () => {
+  server.resetHandlers(
+    http.post("http://localhost:3001/users/signin", () => {
+      return HttpResponse.json({
+        status: 400,
+        details: "Error message",
+      });
+    }),
+    http.post("http://localhost:3001/users/signup", () => {
+      return HttpResponse.json({
+        status: 400,
+        details: "Error message",
+      });
+    })
+  );
   render(<Auth />);
-  const emailInput = screen.getByLabelText(/email address/i);
+  const emailInput = screen.getByRole("textbox", { name: /email address/i });
   expect(emailInput).toBeInTheDocument();
   fireEvent.change(emailInput, { target: { value: "alex@test.com" } });
 
@@ -86,7 +109,7 @@ test("Sign Up submit button on click successfully", async () => {
   expect(signupButton).toBeInTheDocument();
   fireEvent.click(signupButton);
 
-  const emailInput = screen.getByLabelText(/email address/i);
+  const emailInput = screen.getByRole("textbox", { name: /email address/i });
   expect(emailInput).toBeInTheDocument();
   fireEvent.change(emailInput, { target: { value: "alex@test.com" } });
 
@@ -94,7 +117,7 @@ test("Sign Up submit button on click successfully", async () => {
   expect(passwordInput).toBeInTheDocument();
   fireEvent.change(passwordInput, { target: { value: "123456" } });
 
-  const confirmPasswordInput = screen.getByLabelText("Confirm Password");
+  const confirmPasswordInput = screen.getByLabelText(/confirm Password/i);
   expect(confirmPasswordInput).toBeInTheDocument();
   fireEvent.change(confirmPasswordInput, { target: { value: "123456" } });
 
@@ -109,7 +132,7 @@ test("Sign Up submit button on click failed", async () => {
   expect(signupButton).toBeInTheDocument();
   fireEvent.click(signupButton);
 
-  const emailInput = screen.getByLabelText(/email address/i);
+  const emailInput = screen.getByRole("textbox", { name: /email address/i });
   expect(emailInput).toBeInTheDocument();
   fireEvent.change(emailInput, { target: { value: "alex@test.com" } });
 
@@ -128,34 +151,3 @@ test("Sign Up submit button on click failed", async () => {
     await screen.findByText(/passwords do not match/i)
   ).toBeInTheDocument();
 });
-
-// function toJson(component) {
-//   const result = component.toJSON();
-//   expect(result).toBeDefined();
-//   expect(result).not.toBeInstanceOf(Array);
-//   return result;
-// }
-
-// test("Auth rendered snapshot", () => {
-//   const component = renderer.create(<Auth />);
-//   let tree = toJson(component);
-//   // console.log(tree.children[1].children[0].children[0].children[1].children[0]);
-//   expect(tree).toMatchSnapshot();
-
-//   // manually fill the email field
-//   tree.children[1].children[0].children[0].children[1].children[0].props.onChange(
-//     {
-//       target: { value: "alex@test.com" },
-//     }
-//   );
-//   expect(tree).toMatchSnapshot();
-
-//   // manually fill the password field
-//   // console.log(tree.children[1].children[0].children[1].children[1].children[0]);
-//   tree.children[1].children[0].children[1].children[1].children[0].props.onChange(
-//     {
-//       target: { value: "123456" },
-//     }
-//   );
-//   expect(tree).toMatchSnapshot();
-// });
