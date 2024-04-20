@@ -3,6 +3,7 @@ import { logRoles } from "@testing-library/dom";
 import Auth from "./Auth";
 import { http, HttpResponse } from "msw";
 import { server } from "../mocks/server";
+import userEvent from "@testing-library/user-event";
 
 test("Logo image is visible", () => {
   const { container } = render(<Auth />);
@@ -58,6 +59,7 @@ test("Sign in toggle button on click", async () => {
 });
 
 test("Sign In submit button on click successfully", async () => {
+  const user = userEvent.setup();
   render(<Auth />);
   const emailInput = screen.getByRole("textbox", { name: /email address/i });
   expect(emailInput).toBeInTheDocument();
@@ -69,8 +71,16 @@ test("Sign In submit button on click successfully", async () => {
 
   const signinButton = screen.getByRole("button", { name: /submit/i });
   expect(signinButton).toBeInTheDocument();
-  fireEvent.click(signinButton);
-  // screen.debug();
+
+  // Mock window.location.reload
+  const reloadMock = vi.fn();
+  window.location = { reload: reloadMock };
+
+  // fireEvent.click(signinButton);
+  await user.click(signinButton);
+
+  // Assert that window.location.reload was called
+  expect(reloadMock).toHaveBeenCalledTimes(1);
 });
 
 test("Sign In submit button on click failed", async () => {
