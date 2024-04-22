@@ -8,6 +8,8 @@ import { jwtDecode } from "jwt-decode";
 function Home() {
   const authToken = localStorage.getItem("authToken");
   const userEmail = localStorage.getItem("email");
+  console.log("authToken", authToken);
+  console.log("userEmail", userEmail);
   const serverURL = import.meta.env.VITE_SERVERURL;
   const [tasks, setTasks] = useState([]);
 
