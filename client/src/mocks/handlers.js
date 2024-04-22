@@ -13,4 +13,19 @@ export const handlers = [
     const { email } = user;
     return HttpResponse.json({ email, token: "mocked_user_token" });
   }),
+  http.get(
+    "http://localhost:3001/tasks/:userEmail",
+    async ({ request, params }) => {
+      // Read the request body as JSON.
+      const { userEmail } = params;
+      return HttpResponse.json([
+        {
+          user_email: "alex@test.com",
+          title: "Learn Next.js",
+          progress: 50,
+          date: "2021-09-01",
+        },
+      ]);
+    }
+  ),
 ];

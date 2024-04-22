@@ -11,3 +11,28 @@ afterEach(() => server.resetHandlers());
 
 // Clean up after the tests are finished
 afterAll(() => server.close());
+
+// Set up a mock localStorage
+const localStorageMock = (function () {
+    let store = {};
+    return {
+      getItem(key) {
+        return store[key] || null;
+      },
+      setItem(key, value) {
+        store[key] = value.toString();
+      },
+      removeItem(key) {
+        delete store[key];
+      },
+      clear() {
+        store = {};
+      },
+    };
+  })();
+  
+  // Before each test, reset the store and assign the mock to the global object
+  beforeEach(() => {
+    localStorageMock.clear(); // Clear the storage before each test
+    global.localStorage = localStorageMock;
+  });
