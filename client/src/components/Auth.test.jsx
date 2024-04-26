@@ -1,9 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { logRoles } from "@testing-library/dom";
+import { render, screen, fireEvent, logRoles } from "@testing-library/react";
 import Auth from "./Auth";
 import { http, HttpResponse } from "msw";
 import { server } from "../mocks/server";
 import userEvent from "@testing-library/user-event";
+import { expect } from "vitest";
 
 test("Logo image is visible", () => {
   const { container } = render(<Auth />);
@@ -88,13 +88,13 @@ test("Sign In submit button on click failed", async () => {
     http.post("http://localhost:3001/users/signin", () => {
       return HttpResponse.json({
         status: 400,
-        details: "Error message",
+        details: "Error message Sign In",
       });
     }),
     http.post("http://localhost:3001/users/signup", () => {
       return HttpResponse.json({
         status: 400,
-        details: "Error message",
+        details: "Error message Sign Up",
       });
     })
   );
@@ -114,10 +114,11 @@ test("Sign In submit button on click failed", async () => {
 });
 
 test("Sign Up submit button on click successfully", async () => {
+  const user = userEvent.setup();
   render(<Auth />);
   const signupButton = screen.getByRole("button", { name: /sign up/i });
   expect(signupButton).toBeInTheDocument();
-  fireEvent.click(signupButton);
+  await user.click(signupButton);
 
   const emailInput = screen.getByRole("textbox", { name: /email address/i });
   expect(emailInput).toBeInTheDocument();
@@ -133,7 +134,7 @@ test("Sign Up submit button on click successfully", async () => {
 
   const signupSubmitButton = screen.getByRole("button", { name: /submit/i });
   expect(signupSubmitButton).toBeInTheDocument();
-  fireEvent.click(signupSubmitButton);
+  await user.click(signupSubmitButton);
 });
 
 test("Sign Up submit button on click failed", async () => {
