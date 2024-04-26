@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import Home from "./Home";
 import userEvent from "@testing-library/user-event";
-import { afterEach, beforeEach, vi } from "vitest";
+import { afterEach, beforeEach, test, vi } from "vitest";
+import { http, HttpResponse } from "msw";
+import { server } from "../mocks/server";
 
 // Setup a localStorage mock
 beforeEach(() => {
@@ -70,5 +72,12 @@ test("Home component renders with successfully authentication", async () => {
   expect(logoutButton).toBeInTheDocument();
   const addTaskButton = screen.getByRole("button", { name: /add task/i });
   expect(addTaskButton).toBeInTheDocument();
+  screen.debug();
+});
+
+test("Home component renders with no authentication", async () => {
+  render(<Home />);
+  const authElement = screen.getByText(/mocked auth/i);
+  expect(authElement).toBeInTheDocument();
   screen.debug();
 });

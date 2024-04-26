@@ -29,6 +29,7 @@ function Home() {
         },
       });
       const json = await response.json();
+      console.log(json);
       setTasks(json);
     } catch (error) {
       console.log(error);
@@ -59,6 +60,7 @@ function Home() {
         <Auth />
       ) : (
         <div className="mx-12">
+          <rightArrow className="w-6 h-6" />
           <ListHeader
             listName={"My Todo List"}
             userEmail={userEmail}
