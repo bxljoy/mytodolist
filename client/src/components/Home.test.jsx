@@ -29,12 +29,6 @@ vi.mock("jwt-decode", () => {
   };
 });
 
-// vi.mock("./ListHeader", () => ({
-//   default: (listName, userEmail, fetchData) => {
-//     return <div>Mocked ListHeader</div>;
-//   },
-// }));
-
 vi.mock("./Auth", () => ({
   default: () => {
     return <div>Mocked Auth</div>;
@@ -47,14 +41,7 @@ vi.mock("./Modal", () => ({
   },
 }));
 
-// vi.mock("./ListItems", () => ({
-//   default: (tasks, fetchData) => {
-//     return <div>Mocked ListItems</div>;
-//   },
-// }));
-
-test("Home component renders with successfully authentication", async () => {
-  const user = userEvent.setup();
+test("Home component renders with successfully authentication", () => {
   const authKey = "authToken";
   const authValue =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAdGVzdC5jb20iLCJpYXQiOjE3MTM4MDg1NTYsImV4cCI6MTcxMzgxMjE1Nn0.VayI5inLqbKqWeldJhCCccfByHNtVnoIbqm7EmFAI_A";
@@ -72,12 +59,35 @@ test("Home component renders with successfully authentication", async () => {
   expect(logoutButton).toBeInTheDocument();
   const addTaskButton = screen.getByRole("button", { name: /add task/i });
   expect(addTaskButton).toBeInTheDocument();
-  screen.debug();
 });
 
 test("Home component renders with no authentication", async () => {
   render(<Home />);
   const authElement = screen.getByText(/mocked auth/i);
   expect(authElement).toBeInTheDocument();
-  screen.debug();
+});
+
+test("Home component fetches data error", async () => {
+  const authKey = "authToken";
+  const authValue =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAdGVzdC5jb20iLCJpYXQiOjE3MTM4MDg1NTYsImV4cCI6MTcxMzgxMjE1Nn0.VayI5inLqbKqWeldJhCCccfByHNtVnoIbqm7EmFAI_A";
+  localStorage.setItem(authKey, authValue);
+  expect(localStorage.getItem(authKey)).toBe(authValue);
+  const emailKey = "email";
+  const emailValue = "alex@test.com";
+  localStorage.setItem(emailKey, emailValue);
+  expect(localStorage.getItem(emailKey)).toBe(emailValue);
+
+  server.use(
+    http.get("http://localhost:3001/tasks/:userEmail", async ({ params }) => {
+      const { userEmail } = params;
+      return HttpResponse.error({
+        status: 500,
+        body: "Internal Server Error",
+      });
+    })
+  );
+  render(<Home />);
+  expect(localStorage.removeItem).toHaveBeenCalledWith("email");
+  expect(localStorage.removeItem).toHaveBeenCalledWith("authToken");
 });

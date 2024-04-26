@@ -60,7 +60,6 @@ function Home() {
         <Auth />
       ) : (
         <div className="mx-12">
-          <rightArrow className="w-6 h-6" />
           <ListHeader
             listName={"My Todo List"}
             userEmail={userEmail}

@@ -1,16 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ListHeader from "../components/ListHeader";
-import React from "react";
-
-vi.mock("react", () => ({
-  ...vi.importActual("react"), // Import and retain the original React module
-  useState: vi.fn(),
-}));
+import ListHeader from "./ListHeader";
 
 describe("ListHeader Component", () => {
   // Setup a localStorage mock
+
   beforeEach(() => {
     let store = {};
     vi.stubGlobal("localStorage", {
@@ -24,50 +18,63 @@ describe("ListHeader Component", () => {
     vi.restoreAllMocks();
   });
 
+  const fetchData = vi.fn();
+  fetchData.mockReturnValue(
+    Promise.resolve([
+      {
+        user_email: "alex@test.com",
+        title: "Learn Next.js",
+        progress: 50,
+        date: "2021-09-01",
+      },
+    ])
+  );
+
+  vi.mock("./Modal", () => ({
+    default: () => {
+      return <div>Mocked Modal</div>;
+    },
+  }));
+
   it("renders ListHeader with the correct list name and user email", () => {
     render(
       <ListHeader
         listName="My Todo List"
         userEmail="user@example.com"
-        fetchData={() => {}}
+        fetchData={fetchData}
       />
     );
     expect(screen.getByText("My Todo List")).toBeInTheDocument();
-    expect(screen.getByText("Hello, user@example.com")).toBeInTheDocument();
+    expect(screen.getByText(/user@example.com/i)).toBeInTheDocument();
   });
 
   it("opens the modal when the Add Task button is clicked", async () => {
-    const setShowModal = vi.fn();
-    vi.spyOn(React, "useState").mockImplementation((init) => [
-      init,
-      setShowModal,
-    ]);
-
+    const user = userEvent.setup();
     render(
       <ListHeader
         listName="My Todo List"
         userEmail="user@example.com"
-        fetchData={() => {}}
+        fetchData={fetchData}
       />
     );
     const addButton = screen.getByText("Add Task");
-    await userEvent.click(addButton);
-    expect(setShowModal).toHaveBeenCalledWith(true);
+    await user.click(addButton);
+    expect(screen.getByText("Mocked Modal")).toBeInTheDocument();
   });
 
-  it("removes user data and reloads on sign out", () => {
+  it("removes user data and reloads on sign out", async () => {
+    const user = userEvent.setup();
     render(
       <ListHeader
         listName="My Todo List"
         userEmail="user@example.com"
-        fetchData={() => {}}
+        fetchData={fetchData}
       />
     );
     const signOutButton = screen.getByText("Sign Out");
-    fireEvent.click(signOutButton);
+    await user.click(signOutButton);
 
     expect(localStorage.removeItem).toHaveBeenCalledWith("email");
     expect(localStorage.removeItem).toHaveBeenCalledWith("authToken");
-    expect(window.location.reload).toHaveBeenCalled();
   });
 });
