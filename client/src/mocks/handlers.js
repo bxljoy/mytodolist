@@ -25,6 +25,18 @@ export const handlers = [
           progress: 50,
           date: "2021-09-01",
         },
+        {
+          user_email: "alex@test.com",
+          title: "Learn Nest.js",
+          progress: 40,
+          date: "2021-09-02",
+        },
+        {
+          user_email: "alex@test.com",
+          title: "Learn Nuxt.js",
+          progress: 30,
+          date: "2021-09-03",
+        },
       ]);
     }
   ),
