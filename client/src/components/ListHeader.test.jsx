@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ListHeader from "./ListHeader";
 
@@ -19,16 +19,15 @@ describe("ListHeader Component", () => {
   });
 
   const fetchData = vi.fn();
-  fetchData.mockReturnValue(
-    Promise.resolve([
-      {
-        user_email: "alex@test.com",
-        title: "Learn Next.js",
-        progress: 50,
-        date: "2021-09-01",
-      },
-    ])
-  );
+  fetchData.mockResolvedValue([
+    {
+      user_email: "alex@test.com",
+      title: "Learn Next.js",
+      progress: 50,
+      date: "2021-09-01",
+    },
+  ]);
+  fetchData.mockRejectedValue({ details: "error" });
 
   vi.mock("./Modal", () => ({
     default: () => {

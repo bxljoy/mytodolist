@@ -40,4 +40,14 @@ export const handlers = [
       ]);
     }
   ),
+  http.delete("http://localhost:3001/tasks/:id", async ({ params }) => {
+    // Read the request body as JSON.
+    const { id } = params;
+    return HttpResponse.json({
+      user_email: "alex@test.com",
+      title: "Learn Next.js",
+      progress: 50,
+      date: "2021-09-01",
+    });
+  }),
 ];
