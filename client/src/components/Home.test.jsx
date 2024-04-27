@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import Home from "./Home";
-import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, test, vi } from "vitest";
 import { http, HttpResponse } from "msw";
 import { server } from "../mocks/server";
@@ -82,7 +81,7 @@ test("Home component fetches data error", async () => {
     http.get("http://localhost:3001/tasks/:userEmail", async ({ params }) => {
       const { userEmail } = params;
       return HttpResponse.error({
-        status: 500,
+        status: 400,
         body: "Internal Server Error",
       });
     })
