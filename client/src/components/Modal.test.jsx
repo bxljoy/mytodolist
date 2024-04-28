@@ -103,7 +103,7 @@ test("Modal component renders with the correct form fields with add mode status 
   server.use(
     http.post("http://localhost:3001/tasks", async ({ request }) => {
       // Read the request body as JSON.
-      const task = await request.json();
+      await request.json();
       return new HttpResponse(null, { status: 401 });
     })
   );
@@ -125,7 +125,7 @@ test("Modal component renders with error with add mode status ", async () => {
   server.use(
     http.post("http://localhost:3001/tasks", async ({ request }) => {
       // Read the request body as JSON.
-      const task = await request.json();
+      await request.json();
       return HttpResponse.error({ details: "error" });
     })
   );
@@ -144,7 +144,7 @@ test("Modal component renders with the correct form fields with edit mode NOT st
   server.use(
     http.patch("http://localhost:3001/tasks/:id", async ({ request }) => {
       // Read the request body as JSON.
-      const task = await request.json();
+      await request.json();
       return new HttpResponse(null, { status: 400 });
     })
   );
@@ -179,7 +179,7 @@ test("Modal component renders with error with edit mode", async () => {
   server.use(
     http.patch("http://localhost:3001/tasks/:id", async ({ request }) => {
       // Read the request body as JSON.
-      const task = await request.json();
+      await request.json();
       return HttpResponse.error({ details: "error" });
     })
   );

@@ -18,6 +18,7 @@ export const handlers = [
     async ({ request, params }) => {
       // Read the request body as JSON.
       const { userEmail } = params;
+      console.log(userEmail);
       return HttpResponse.json([
         {
           user_email: "alex@test.com",
@@ -43,6 +44,7 @@ export const handlers = [
   http.delete("http://localhost:3001/tasks/:id", async ({ params }) => {
     // Read the request body as JSON.
     const { id } = params;
+    console.log("id", id);
     return HttpResponse.json({
       user_email: "alex@test.com",
       title: "Learn Next.js",
@@ -59,6 +61,7 @@ export const handlers = [
   http.patch("http://localhost:3001/tasks/:id", async ({ request, params }) => {
     // Read the request body as JSON.
     const { id } = params;
+    console.log("id", id);
     const task = await request.json();
     return new HttpResponse(JSON.stringify(task), { status: 200 });
   }),

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, logRoles } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import Auth from "./Auth";
 import { http, HttpResponse } from "msw";
 import { server } from "../mocks/server";
@@ -6,9 +6,7 @@ import userEvent from "@testing-library/user-event";
 import { expect } from "vitest";
 
 test("Logo image is visible", () => {
-  const { container } = render(<Auth />);
-  logRoles(container);
-
+  render(<Auth />);
   const logoElement = screen.getByRole("img", { name: /your logo/i });
   expect(logoElement).toBeInTheDocument();
 });
