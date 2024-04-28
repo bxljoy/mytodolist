@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
 import ListItem from "./ListItem";
-import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { server } from "../mocks/server";

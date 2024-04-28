@@ -50,4 +50,16 @@ export const handlers = [
       date: "2021-09-01",
     });
   }),
+  http.post("http://localhost:3001/tasks", async ({ request }) => {
+    // Read the request body as JSON.
+    const task = await request.json();
+    // return HttpResponse.json(task);
+    return new HttpResponse(JSON.stringify(task), { status: 201 });
+  }),
+  http.patch("http://localhost:3001/tasks/:id", async ({ request, params }) => {
+    // Read the request body as JSON.
+    const { id } = params;
+    const task = await request.json();
+    return new HttpResponse(JSON.stringify(task), { status: 200 });
+  }),
 ];
