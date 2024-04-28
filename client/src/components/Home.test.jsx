@@ -80,6 +80,7 @@ test("Home component fetches data error", async () => {
   server.use(
     http.get("http://localhost:3001/tasks/:userEmail", async ({ params }) => {
       const { userEmail } = params;
+      console.log(userEmail);
       return HttpResponse.error({
         status: 400,
         body: "Internal Server Error",

@@ -103,6 +103,7 @@ test("ListItem component deletes the task when the delete button is clicked real
   server.use(
     http.delete("http://localhost:3001/tasks/:id", async ({ params }) => {
       const { id } = params;
+      console.log("id", id);
       return HttpResponse.error({
         status: 400,
         body: { details: "error" },
