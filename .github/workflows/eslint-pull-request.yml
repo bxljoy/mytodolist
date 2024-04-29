@@ -19,7 +19,11 @@ jobs:
           node-version: "20" # Specify the Node.js version
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd client
+          npm install
 
       - name: Run ESLint
-        run: npx eslint . --ext .js,.jsx,.ts,.tsx
+        run: |
+          cd client
+          npx eslint . --ext .js,.jsx,.ts,.tsx

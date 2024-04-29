@@ -19,6 +19,7 @@ export const handlers = [
       // Read the request body as JSON.
       const { userEmail } = params;
       console.log(userEmail);
+      request.url.searchParams.get("userEmail");
       return HttpResponse.json([
         {
           user_email: "alex@test.com",
