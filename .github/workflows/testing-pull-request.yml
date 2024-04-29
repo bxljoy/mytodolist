@@ -31,3 +31,5 @@ jobs:
         run: |
           cd client
           npm run test
+        env:
+          VITE_SERVERURL: ${{ secrets.VITE_SERVERURL }}
