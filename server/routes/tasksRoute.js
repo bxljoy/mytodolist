@@ -1,15 +1,23 @@
-const router = require('express').Router();
+const router = require("express").Router();
+// const {
+//   getTasks,
+//   addTask,
+//   deleteTask,
+//   updateTask,
+// } = require('../controllers/tasksController');
+
 const {
   getTasks,
   addTask,
   deleteTask,
   updateTask,
-} = require('../controllers/tasksController');
-const auth = require('../middlewares/auth');
+} = require("../controllers/tasksController_supabase");
 
-router.get('/:userEmail', auth, getTasks);
-router.post('/', auth, addTask);
-router.patch('/:id', auth, updateTask);
-router.delete('/:id', auth, deleteTask);
+const auth = require("../middlewares/auth");
+
+router.get("/:userEmail", auth, getTasks);
+router.post("/", auth, addTask);
+router.patch("/:id", auth, updateTask);
+router.delete("/:id", auth, deleteTask);
 
 module.exports = router;
